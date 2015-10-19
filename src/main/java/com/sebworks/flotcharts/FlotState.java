@@ -15,4 +15,5 @@ public class FlotState extends JavaScriptComponentState {
 	public boolean timeMode = false;
 	public boolean tooltips = false;
 	public boolean points = true;
+	public boolean zoomAndPan = false;
 }

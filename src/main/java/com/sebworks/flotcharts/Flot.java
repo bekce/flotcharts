@@ -24,7 +24,7 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
  * @author seb
  *
  */
-@JavaScript({ "jquery.min.js", "jquery.flot.js", "flot_connector.js" })
+@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "flot_connector.js" })
 public class Flot extends AbstractJavaScriptComponent {
 
 	/**
@@ -33,34 +33,25 @@ public class Flot extends AbstractJavaScriptComponent {
 	public Flot() {
 		setWidth(100, Unit.PERCENTAGE);
 	}
-
 	/**
 	 * Show legend. Default is true.
 	 */
 	public void setDisplayLegend(boolean displayLegend) {
 		getState().legend = displayLegend;
 	}
-	
-	/**
-	 * Show tooltips on each point. Default is false.
-	 */
-	public void setDisplayTooltips(boolean displayTooltips){
-		getState().tooltips = displayTooltips;
-	}
-	
-	/**
-	 * Show points. Default is true.
-	 */
-	public void setDisplayPoints(boolean displayPoints){
-		getState().points = displayPoints;
-	}
-
 	/**
 	 * Enables timeseries support for xAxis. x axis data needs to be UTC epoch
 	 * milliseconds for this to work. Default is false.
 	 */
 	public void setXAxisTimeMode(boolean xAxisTimeMode) {
 		getState().timeMode = xAxisTimeMode;
+	}
+	/**
+	 * Enables zoom and pan feature for both axises. Creates zoom out and navigation buttons.
+	 * @param enableZoomAndPan
+	 */
+	public void setEnableZoomAndPan(boolean enableZoomAndPan){
+		getState().zoomAndPan = enableZoomAndPan;
 	}
 
 	/**
