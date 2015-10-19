@@ -5,33 +5,48 @@ window.com_sebworks_flotcharts_Flot = function() {
 
 	var updateFlot = function() {
 
-		var options;
-		if(thisFlot.getState().type == 1){
-			options = {
-				series: {
-					lines: { show: true },
-					points: { show: true }
-				},
-				grid : { hoverable : true }
+		// get state
+		var state = thisFlot.getState();
+		
+		// construct options
+		var options = {}
+		options.grid = { hoverable : true }
+		if(state.legend){
+			options.legend = { show : true }
+		}
+		if(state.timeMode){
+			options.xaxis = { mode = "time" }
+		}
+		
+		// construct series array
+		var series = []
+		for (var i = 0; i < state.series.length; i++) {
+			var s1 = state.series[i]
+			var s2 = {}
+			s2.color = s1.color
+			s2.label = s1.label
+			s2.data = s1.data
+			if(s1.type == "LINE"){
+				s2.lines = { show : true }
 			}
-		}
-		else if(thisFlot.getState().type == 2){
-			options = {
-				series: {
-					bars: { show: true },
-					points: { show: true }
-				},
-				grid : { hoverable : true }
+			else if(s1.type == "COLUMN"){
+				s2.bars = { show : true }
 			}
+			else {
+				console.error("[flotcharts] non-recognized series type: "+s1.type);
+			}
+			if(s1.showPoints){
+				s2.points = { show : true }
+			}
+			series.push(s2);
 		}
-		else {
-			console.log("[flotcharts.flot] unhandled type");
-		}
-		$.plot(element, thisFlot.getState().series, options);
+		
+		// flot it!
+		$.plot(element, series, options);
 	}
 	
 	this.onStateChange = updateFlot;
 	window.addEventListener("resize", updateFlot);
 
 };
-console.log("[flotcharts.flot] init");
+console.log("[flotcharts] init");

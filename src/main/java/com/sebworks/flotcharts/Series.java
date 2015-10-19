@@ -36,6 +36,23 @@ public class Series implements Serializable {
 	 * array.
 	 */
 	public List<double[]> data = new ArrayList<>();
+	
+//	public Integer xaxis = null;
+//	public Integer yaxis = null;
+//	/**
+//	 * "clickable" and "hoverable" can be set to false to disable interactivity
+//	 * for specific series if interactivity is turned on in the plot, see below.
+//	 */
+//	public boolean clickable = true;
+//	/**
+//	 * "clickable" and "hoverable" can be set to false to disable interactivity
+//	 * for specific series if interactivity is turned on in the plot, see below.
+//	 */
+//	public boolean hoverable = true;
+//	public Integer shadowSize = null;	
+//	public String highlightColor = null;
+	
+	public boolean showPoints = true;
 
 	public Series setColor(String color){
 		this.color = color;
