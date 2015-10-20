@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0048)http://www.flotcharts.org/flot/examples/zooming/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>Flot Examples: Selection and zooming</title>
+	<link href="./Flot Examples_ Selection and zooming_files/examples.css" rel="stylesheet" type="text/css">
+	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<script language="javascript" type="text/javascript" src="./Flot Examples_ Selection and zooming_files/jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="./Flot Examples_ Selection and zooming_files/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="./Flot Examples_ Selection and zooming_files/jquery.flot.selection.js"></script>
+	<script type="text/javascript">
+
+	$(function() {
+
+		// setup plot
+
+		function getData(x1, x2) {
+
+			var d = [];
+			for (var i = 0; i <= 100; ++i) {
+				var x = x1 + i * (x2 - x1) / 100;
+				d.push([x, Math.sin(x * Math.sin(x))]);
+			}
+
+			return [
+				{ label: "sin(x sin(x))", data: d }
+			];
+		}
+		function addReset(element, plot, startData){
+			$("<div class='button' style='position: absolute;cursor: pointer;font-size: smaller; color: #999; background-color: #eee; padding: 2px;right:20px;top:20px'>reset</div>")
+				.appendTo(element)
+				.click(function (event) {
+					event.preventDefault();
+					plot = $.plot(element, startData,
+						$.extend(true, {}, options, {
+							xaxis: { min: null, max: null },
+							yaxis: { min: null, max: null }
+						})
+					);
+					addReset(element, plot, startData);
+				});
+		}
+
+		var options = {
+			legend: {
+				show: false
+			},
+			series: {
+			  color: "blue",
+				lines: {
+					show: true
+				},
+				points: {
+					show: false
+				}
+			},
+			yaxis: {
+				ticks: 10
+			},
+			selection: {
+				mode: "xy"
+			}
+		};
+
+		var startData = getData(0, 3 * Math.PI);
+
+    var element = $("#placeholder");
+		var plot = $.plot(element, startData, options);
+		addReset(element, plot, startData);
+
+
+		// now connect the two
+
+		$("#placeholder").bind("plotselected", function (event, ranges) {
+
+			// clamp the zooming to prevent eternal zoom
+
+			if (ranges.xaxis.to - ranges.xaxis.from < 0.001) {
+				ranges.xaxis.to = ranges.xaxis.from + 0.001;
+			}
+
+			if (ranges.yaxis.to - ranges.yaxis.from < 0.001) {
+				ranges.yaxis.to = ranges.yaxis.from + 0.001;
+			}
+
+			// do the zooming
+
+			plot = $.plot(element, getData(ranges.xaxis.from, ranges.xaxis.to),
+				$.extend(true, {}, options, {
+					xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to },
+					yaxis: { min: ranges.yaxis.from, max: ranges.yaxis.to }
+				})
+			);
+			addReset(element, plot, startData);
+		});
+
+		// Add the Flot version string to the footer
+
+		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+
+	</script>
+<style type="text/css"></style></head>
+<body>
+
+	<div id="header">
+		<h2>Selection and zooming</h2>
+	</div>
+
+	<div id="content">
+
+		<div class="demo-container">
+			<div id="placeholder" class="demo-placeholder" style="float: left; width: 650px; padding: 0px; position: relative;"><canvas class="flot-base" width="650" height="413" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 650px; height: 413px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);"><div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 94px; text-align: center;">2.0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 174px; text-align: center;">2.5</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 253px; text-align: center;">3.0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 332px; text-align: center;">3.5</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 412px; text-align: center;">4.0</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 491px; text-align: center;">4.5</div><div class="flot-tick-label tickLabel" style="position: absolute; max-width: 72px; top: 395px; left: 570px; text-align: center;">5.0</div></div><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 356px; left: 2px; text-align: right;">-1.0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 324px; left: 2px; text-align: right;">-0.9</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 291px; left: 2px; text-align: right;">-0.8</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 259px; left: 2px; text-align: right;">-0.7</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 227px; left: 2px; text-align: right;">-0.6</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 194px; left: 2px; text-align: right;">-0.5</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 162px; left: 2px; text-align: right;">-0.4</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 130px; left: 2px; text-align: right;">-0.3</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 97px; left: 2px; text-align: right;">-0.2</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 65px; left: 2px; text-align: right;">-0.1</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 33px; left: 6px; text-align: right;">0.0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 0px; left: 6px; text-align: right;">0.1</div></div></div><canvas class="flot-overlay" width="650" height="413" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 650px; height: 413px;"></canvas></div>
+		</div>
+
+		<p>Selection support makes it easy to construct flexible zooming schemes. With a few lines of code, the small overview plot to the right has been connected to the large plot. Try selecting a rectangle on either of them.</p>
+
+	</div>
+
+	<div id="footer">Flot 0.8.3 – 
+		Copyright © 2007 - 2014 IOLA and Ole Laursen
+	</div>
+
+
+
+</body></html>
