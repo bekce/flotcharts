@@ -42,7 +42,7 @@ window.com_sebworks_flotcharts_Flot = function() {
 			options.pan = { interactive : true };
 		}
 		if(state.selectAndZoom){
-			options.selection = { mode: "xy" }
+			options.selection = { mode: state.selectAndZoomMode }
 		}
 
 		// construct series array

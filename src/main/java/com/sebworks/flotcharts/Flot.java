@@ -24,7 +24,7 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
  * @author seb
  *
  */
-@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "flot_connector.js" })
+@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "jquery.flot.time.js", "flot_connector.js" })
 public class Flot extends AbstractJavaScriptComponent {
 
 	/**
