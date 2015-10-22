@@ -24,7 +24,7 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
  * @author seb
  *
  */
-@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "flot_connector.js" })
+@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "flot_connector.js" })
 public class Flot extends AbstractJavaScriptComponent {
 
 	/**
@@ -52,6 +52,14 @@ public class Flot extends AbstractJavaScriptComponent {
 	 */
 	public void setEnableZoomAndPan(boolean enableZoomAndPan){
 		getState().zoomAndPan = enableZoomAndPan;
+	}
+	
+	public void setEnableSelectAndZoom(boolean selectAndZoom){
+		getState().selectAndZoom = selectAndZoom;
+	}
+	
+	public void setSelectAndZoomMode(String mode){
+		getState().selectAndZoomMode = mode;
 	}
 
 	/**
