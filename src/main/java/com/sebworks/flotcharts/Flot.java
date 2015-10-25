@@ -19,8 +19,8 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
  * If you're using percentage values, make sure ALL parent components has
  * defined sizes (percentage or fixed).
  * </p>
- * 
- * 
+ *
+ *
  * @author seb
  *
  */
@@ -36,54 +36,62 @@ public class Flot extends AbstractJavaScriptComponent {
 	/**
 	 * Show legend. Default is true.
 	 */
-	public void setDisplayLegend(boolean displayLegend) {
+	public Flot setDisplayLegend(boolean displayLegend) {
 		getState().legend = displayLegend;
+		return this;
 	}
 	/**
 	 * Enables timeseries support for xAxis. x axis data needs to be UTC epoch
 	 * milliseconds for this to work. Default is false.
 	 */
-	public void setXAxisTimeMode(boolean xAxisTimeMode) {
+	public Flot setXAxisTimeMode(boolean xAxisTimeMode) {
 		getState().timeMode = xAxisTimeMode;
+		return this;
 	}
 	/**
 	 * Enables zoom and pan feature for both axises. Creates zoom out and navigation buttons.
 	 * @param enableZoomAndPan
 	 */
-	public void setEnableZoomAndPan(boolean enableZoomAndPan){
+	public Flot setEnableZoomAndPan(boolean enableZoomAndPan){
 		getState().zoomAndPan = enableZoomAndPan;
+		return this;
 	}
-	
-	public void setEnableSelectAndZoom(boolean selectAndZoom){
+
+	public Flot setEnableSelectAndZoom(boolean selectAndZoom){
 		getState().selectAndZoom = selectAndZoom;
+		return this;
 	}
-	
-	public void setSelectAndZoomMode(String mode){
+
+	public Flot setSelectAndZoomMode(String mode){
 		getState().selectAndZoomMode = mode;
+		return this;
 	}
 
 	/**
 	 * Clears all series
 	 */
-	public void clearSeries() {
+	public Flot clearSeries() {
 		getState().series.clear();
+		return this;
 	}
 
 	/**
 	 * @param series
 	 *            Adds given series to the chart.
 	 */
-	public void addSeries(Series series) {
+	public Flot addSeries(Series series) {
 		getState().series.add(series);
+		return this;
 	}
 
 	/**
 	 * Remove given series from chart.
-	 * 
+	 *
 	 * @param series
 	 */
-	public void removeSeries(Series series) {
+	public Flot removeSeries(Series series) {
 		getState().series.remove(series);
+		return this;
 	}
 
 	/**

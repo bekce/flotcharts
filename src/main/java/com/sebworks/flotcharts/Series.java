@@ -14,7 +14,7 @@ public class Series implements Serializable {
 		LINE, COLUMN
 	}
 	/**
-	 * Type of this Series. 
+	 * Type of this Series.
 	 */
 	public SeriesType type = SeriesType.LINE;
 	/**
@@ -36,7 +36,7 @@ public class Series implements Serializable {
 	 * array.
 	 */
 	public List<double[]> data = new ArrayList<>();
-	
+
 //	public Integer xaxis = null;
 //	public Integer yaxis = null;
 //	/**
@@ -49,18 +49,28 @@ public class Series implements Serializable {
 //	 * for specific series if interactivity is turned on in the plot, see below.
 //	 */
 //	public boolean hoverable = true;
-//	public Integer shadowSize = null;	
+//	public Integer shadowSize = null;
 //	public String highlightColor = null;
-	
+
 	public boolean showPoints = true;
 
 	public Series setColor(String color){
 		this.color = color;
 		return this;
 	}
-	
+
 	public Series setLabel(String label) {
 		this.label = label;
+		return this;
+	}
+
+	public Series setType(SeriesType type){
+		this.type = type;
+		return this;
+	}
+
+	public Series setShowPoints(boolean showPoints){
+		this.showPoints = showPoints;
 		return this;
 	}
 
@@ -68,4 +78,10 @@ public class Series implements Serializable {
 		data.add(new double[] { x, y });
 		return this;
 	}
+
+	public Series clearData(){
+		data.clear();
+		return this;
+	}
+	
 }
