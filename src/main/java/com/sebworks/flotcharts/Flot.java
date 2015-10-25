@@ -27,11 +27,21 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
 @JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "jquery.flot.time.js", "flot_connector.js" })
 public class Flot extends AbstractJavaScriptComponent {
 
+  public enum SelectAndZoomMode {
+		NONE, X, Y, XY;
+		@Override
+		public String toString() {
+			return this.name().toLowerCase();
+		}
+	}
+
 	/**
-	 * Create an empty flot with 100% width. Don't forget to set a height value.
+	 * Create an empty flot with 100% width. Sets a temporary height value in case
+	 * user forgets to set a value. Don't forget to set it.
 	 */
 	public Flot() {
 		setWidth(100, Unit.PERCENTAGE);
+		setHeight(200, Unit.PIXELS);
 	}
 	/**
 	 * Show legend. Default is true.
@@ -57,13 +67,12 @@ public class Flot extends AbstractJavaScriptComponent {
 		return this;
 	}
 
-	public Flot setEnableSelectAndZoom(boolean selectAndZoom){
-		getState().selectAndZoom = selectAndZoom;
-		return this;
-	}
-
-	public Flot setSelectAndZoomMode(String mode){
-		getState().selectAndZoomMode = mode;
+	/**
+	 * Enables select and zoom functionality on given axises.
+	 */
+	public Flot setSelectAndZoomMode(SelectAndZoomMode mode){
+		getState().selectAndZoomMode = mode.toString();
+		getState().selectAndZoom = mode != SelectAndZoomMode.NONE;
 		return this;
 	}
 

@@ -17,6 +17,6 @@ public class FlotState extends JavaScriptComponentState {
 	public boolean points = true;
 	public boolean zoomAndPan = false;
 	public boolean selectAndZoom = false;
-	public String selectAndZoomMode = "xy";
+	public String selectAndZoomMode = "";
 
 }
