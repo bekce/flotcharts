@@ -6,6 +6,10 @@ window.com_sebworks_flotcharts_Flot = function() {
 	var options;
 	var series;
 	var currentRanges;
+	
+	function labelFormatter(label, series) {
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+	}
 
 	function addSelectZoomReset(){
 		$("<div class='button' style='position: absolute;cursor: pointer;font-size: medium; color: #999; background-color: #eee; padding: 2px;right:20px;top:20px'>reset</div>")
@@ -47,6 +51,7 @@ window.com_sebworks_flotcharts_Flot = function() {
 
 		// construct series array
 		series = [];
+		var isPie = false;
 		for (var i = 0; i < state.series.length; i++) {
 			var s1 = state.series[i];
 			var s2 = {};
@@ -59,6 +64,10 @@ window.com_sebworks_flotcharts_Flot = function() {
 			else if(s1.type == "COLUMN"){
 				s2.bars = { show : true };
 			}
+			else if(s1.type == "PIE"){
+				isPie = true;
+				s2.data = s1.data[0][0];
+			}
 			else {
 				console.error("[flotcharts] non-recognized series type: "+s1.type);
 			}
@@ -66,6 +75,62 @@ window.com_sebworks_flotcharts_Flot = function() {
 				s2.points = { show : true };
 			}
 			series.push(s2);
+		}
+		if(isPie){
+			if(state.styleMode == 0){
+				options.series = {
+					pie: {
+						show: true
+					}
+				};
+			} else if (state.styleMode == 1) {
+				options.series = {
+					pie: {
+						show: true,
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: {
+								opacity: 0.5
+							}
+						}
+					}
+				};
+				options.legend = { show: false };
+			} else if (state.styleMode == 2) {
+				options.series = {
+					pie: {
+						show: true,
+						radius: 1,
+						label: {
+							show: true,
+							radius: 3/4,
+							formatter: labelFormatter,
+							background: {
+								opacity: 0.5,
+								color: '#000'
+							}
+						}
+					}
+				};
+				options.legend = { show: false };
+			} else if (state.styleMode == 3) {
+				options.series = {
+					pie: {
+						show: true,
+						radius: 1,
+						label: {
+							show: true,
+							radius: 2/3,
+							formatter: labelFormatter,
+							threshold: 0.1
+						}
+					}
+				};
+				options.legend = { show: false };
+			}
 		}
 
 		// flot it!

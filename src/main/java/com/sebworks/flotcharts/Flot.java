@@ -24,10 +24,10 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
  * @author seb
  *
  */
-@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "jquery.flot.time.js", "flot_connector.js" })
+@JavaScript({ "jquery.min.js", "jquery.flot.js", "jquery.flot.pie.js", "jquery.flot.navigate.js", "jquery.flot.selection.js", "jquery.flot.time.js", "flot_connector.js" })
 public class Flot extends AbstractJavaScriptComponent {
 
-  public enum SelectAndZoomMode {
+	public enum SelectAndZoomMode {
 		NONE, X, Y, XY;
 		@Override
 		public String toString() {
@@ -73,6 +73,14 @@ public class Flot extends AbstractJavaScriptComponent {
 	public Flot setSelectAndZoomMode(SelectAndZoomMode mode){
 		getState().selectAndZoomMode = mode.toString();
 		getState().selectAndZoom = mode != SelectAndZoomMode.NONE;
+		return this;
+	}
+
+	/**
+	 * Selects custom style mode (only applicable for pie charts)
+	 */
+	public Flot setStyleMode(int styleMode){
+		getState().styleMode = styleMode;
 		return this;
 	}
 

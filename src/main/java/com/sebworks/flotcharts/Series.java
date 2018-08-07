@@ -11,7 +11,7 @@ import java.util.List;
 public class Series implements Serializable {
 
 	public enum SeriesType {
-		LINE, COLUMN
+		LINE, COLUMN, PIE
 	}
 	/**
 	 * Type of this Series.
