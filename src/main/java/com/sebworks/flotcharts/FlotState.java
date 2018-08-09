@@ -18,6 +18,10 @@ public class FlotState extends JavaScriptComponentState {
 	public boolean zoomAndPan = false;
 	public boolean selectAndZoom = false;
 	public String selectAndZoomMode = "";
+	// "percent", "value-full", "value-short", "percent-value-full", "percent-value-short"
+	public String pieValueMode = "percent";
+	// lower then this percent, legend won't be shown
+	public double pieValueThreshold = 0.05;
 	public int styleMode = 0;
 
 }

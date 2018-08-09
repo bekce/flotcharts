@@ -7,8 +7,34 @@ window.com_sebworks_flotcharts_Flot = function() {
 	var series;
 	var currentRanges;
 	
+	function nFormatter(num) {
+		if (num >= 1000000000) {
+			return (num / 1000000000).toFixed(2).replace(/\.0$/, '') + 'G';
+		}
+		if (num >= 1000000) {
+			return (num / 1000000).toFixed(2).replace(/\.0$/, '') + 'M';
+		}
+		if (num >= 1000) {
+			return (num / 1000).toFixed(2).replace(/\.0$/, '') + 'K';
+		}
+		return num;
+	}
+
 	function labelFormatter(label, series) {
-		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+		var mode = thisFlot.getState().pieValueMode;
+		var inside = '';
+		if(mode=='percent'){
+			inside=Math.round(series.percent) + "%";
+		} else if (mode=='value-full') {
+			inside=Math.round(Number(series.data[0][1])).toLocaleString()
+		} else if (mode=='value-short') {
+			inside=nFormatter(series.data[0][1])
+		} else if (mode=='percent-value-full') {
+			inside=Math.round(Number(series.data[0][1])).toLocaleString()+' ('+Math.round(series.percent)+"%)";
+		} else if (mode=='percent-value-short') {
+			inside=nFormatter(series.data[0][1])+' ('+Math.round(series.percent)+"%)";
+		}
+		return "<div style='font-size:8pt; text-align:center; padding:2px; color:white;'>" + label + "<br/>" + inside + "</div>";
 	}
 
 	function addSelectZoomReset(){
@@ -37,6 +63,8 @@ window.com_sebworks_flotcharts_Flot = function() {
 		options.grid = { hoverable : true };
 		if(state.legend){
 			options.legend = { show : true, position : "nw" };
+		} else {
+			options.legend = { show: false };
 		}
 		if(state.timeMode){
 			options.xaxis = { mode : "time" };
@@ -77,6 +105,7 @@ window.com_sebworks_flotcharts_Flot = function() {
 			series.push(s2);
 		}
 		if(isPie){
+			
 			if(state.styleMode == 0){
 				options.series = {
 					pie: {
@@ -92,13 +121,14 @@ window.com_sebworks_flotcharts_Flot = function() {
 							show: true,
 							radius: 3/4,
 							formatter: labelFormatter,
+							threshold: state.pieValueThreshold,
 							background: {
 								opacity: 0.5
 							}
 						}
 					}
 				};
-				options.legend = { show: false };
+				// options.legend = { show: false };
 			} else if (state.styleMode == 2) {
 				options.series = {
 					pie: {
@@ -108,6 +138,7 @@ window.com_sebworks_flotcharts_Flot = function() {
 							show: true,
 							radius: 3/4,
 							formatter: labelFormatter,
+							threshold: state.pieValueThreshold,
 							background: {
 								opacity: 0.5,
 								color: '#000'
@@ -115,7 +146,7 @@ window.com_sebworks_flotcharts_Flot = function() {
 						}
 					}
 				};
-				options.legend = { show: false };
+				// options.legend = { show: false };
 			} else if (state.styleMode == 3) {
 				options.series = {
 					pie: {
@@ -125,11 +156,11 @@ window.com_sebworks_flotcharts_Flot = function() {
 							show: true,
 							radius: 2/3,
 							formatter: labelFormatter,
-							threshold: 0.1
+							threshold: state.pieValueThreshold
 						}
 					}
 				};
-				options.legend = { show: false };
+				// options.legend = { show: false };
 			}
 		}
 
@@ -144,7 +175,30 @@ window.com_sebworks_flotcharts_Flot = function() {
 		} else {
 			var plot = $.plot(element, series, options);
 		}
-
+		
+		if(isPie){
+			var tooltip_id = 'flot_tooltip_'+Math.random().toString(36).substr(2, 10);
+			$("<div id='"+tooltip_id+"'></div>").css({
+				position: "absolute",
+				display: "none",
+				border: "1px solid #fdd",
+				padding: "2px",
+				"background-color": "#fee",
+				opacity: 0.80
+			}).appendTo(element);
+			
+			element.bind("plothover", function (event, pos, item) {
+				if (item) {
+					var value = Math.round(Number(item.series.data[0][1])).toLocaleString()+' ('+Math.round(item.series.percent)+"%)";
+					// var value = item.data[0][1];
+					$("#"+tooltip_id).html(item.series.label + " " + value)
+						.css({top: item.pageY+5, left: item.pageX+5})
+						.fadeIn(200);
+				} else {
+					$("#"+tooltip_id).hide();
+				}
+			});
+		}
 
 		if(state.zoomAndPan){
 

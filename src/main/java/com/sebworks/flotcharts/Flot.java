@@ -75,6 +75,16 @@ public class Flot extends AbstractJavaScriptComponent {
 		getState().selectAndZoom = mode != SelectAndZoomMode.NONE;
 		return this;
 	}
+	
+	public Flot setPieValueMode(String pieValueMode){
+		getState().pieValueMode = pieValueMode;
+		return this;
+	}
+
+	public Flot setPieValueThreshold(double pieValueThreshold){
+		getState().pieValueThreshold = pieValueThreshold;
+		return this;
+	}
 
 	/**
 	 * Selects custom style mode (only applicable for pie charts)
