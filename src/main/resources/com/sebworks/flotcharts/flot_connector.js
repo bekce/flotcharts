@@ -80,27 +80,40 @@ window.com_sebworks_flotcharts_Flot = function() {
 		// construct series array
 		series = [];
 		var isPie = false;
+		var isCategorical = false;
 		for (var i = 0; i < state.series.length; i++) {
 			var s1 = state.series[i];
 			var s2 = {};
 			s2.color = s1.color;
 			s2.label = s1.label;
 			s2.data = s1.data;
+			if(s1.showPoints){
+				s2.points = { show : true };
+			}
 			if(s1.type == "LINE"){
 				s2.lines = { show : true };
 			}
 			else if(s1.type == "COLUMN"){
-				s2.bars = { show : true };
+				s2.bars = {
+					show : true,
+					barWidth: s1.barWidth,
+					align: s1.align
+				};
 			}
 			else if(s1.type == "PIE"){
 				isPie = true;
 				s2.data = s1.data[0][0];
 			}
+			else if (s1.type == "CATEGORICAL") {
+				s2.bars = {
+					show : true,
+					barWidth: s1.barWidth,
+					align: s1.align
+				};
+				isCategorical = true;
+			}
 			else {
 				console.error("[flotcharts] non-recognized series type: "+s1.type);
-			}
-			if(s1.showPoints){
-				s2.points = { show : true };
 			}
 			series.push(s2);
 		}
@@ -163,6 +176,12 @@ window.com_sebworks_flotcharts_Flot = function() {
 				// options.legend = { show: false };
 			}
 		}
+		if(isCategorical){
+			options.xaxis = {
+				mode: "categories", 
+				tickLength: 0
+			};
+		}
 
 		// flot it!
 		if(currentRanges != null){
@@ -176,23 +195,32 @@ window.com_sebworks_flotcharts_Flot = function() {
 			var plot = $.plot(element, series, options);
 		}
 		
+		var tooltip_id = 'flot_tooltip_'+Math.random().toString(36).substr(2, 10);
+		$("<div id='"+tooltip_id+"'></div>").css({
+			position: isPie ? "absolute" : "fixed",
+			display: "none",
+			border: "1px solid #fdd",
+			padding: "2px",
+			"background-color": "#fee",
+			opacity: 0.80
+		}).appendTo(element);
 		if(isPie){
-			var tooltip_id = 'flot_tooltip_'+Math.random().toString(36).substr(2, 10);
-			$("<div id='"+tooltip_id+"'></div>").css({
-				position: "absolute",
-				display: "none",
-				border: "1px solid #fdd",
-				padding: "2px",
-				"background-color": "#fee",
-				opacity: 0.80
-			}).appendTo(element);
-			
 			element.bind("plothover", function (event, pos, item) {
 				if (item) {
 					var value = Math.round(Number(item.series.data[0][1])).toLocaleString()+' ('+Math.round(item.series.percent)+"%)";
-					// var value = item.data[0][1];
 					$("#"+tooltip_id).html(item.series.label + " " + value)
 						.css({top: item.pageY+5, left: item.pageX+5})
+						.fadeIn(200);
+				} else {
+					$("#"+tooltip_id).hide();
+				}
+			});
+		} else {
+			element.bind("plothover", function (event, pos, item) {
+				if (item) {
+					var value = Math.round(item.datapoint[1]).toLocaleString();
+					$("#"+tooltip_id).html(item.series.label + " " + value)
+						.css({top: item.pageY-50, left: item.pageX+5})
 						.fadeIn(200);
 				} else {
 					$("#"+tooltip_id).hide();

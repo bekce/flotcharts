@@ -11,7 +11,7 @@ import java.util.List;
 public class Series implements Serializable {
 
 	public enum SeriesType {
-		LINE, COLUMN, PIE
+		LINE, COLUMN, CATEGORICAL, PIE
 	}
 	/**
 	 * Type of this Series.
@@ -35,7 +35,7 @@ public class Series implements Serializable {
 	 * data order and draws the chart from one point to the next in the given
 	 * array.
 	 */
-	public List<double[]> data = new ArrayList<>();
+	public List<Object[]> data = new ArrayList<>();
 
 //	public Integer xaxis = null;
 //	public Integer yaxis = null;
@@ -52,7 +52,11 @@ public class Series implements Serializable {
 //	public Integer shadowSize = null;
 //	public String highlightColor = null;
 
-	public boolean showPoints = true;
+	public boolean showPoints = false;
+	
+	public String align = "center";
+	
+	public double barWidth = 0.8;
 
 	public Series setColor(String color){
 		this.color = color;
@@ -74,8 +78,28 @@ public class Series implements Serializable {
 		return this;
 	}
 
+	public Series setAlign(String align){
+		this.align = align;
+		return this;
+	}
+
+	public Series setBarWidth(double barWidth){
+		this.barWidth = barWidth;
+		return this;
+	}
+
 	public Series addData(double x, double y) {
-		data.add(new double[] { x, y });
+		data.add(new Object[] { x, y });
+		return this;
+	}
+
+	public Series addPieData(double x) {
+		data.add(new Object[] { x });
+		return this;
+	}
+	
+	public Series addCategoricalData(String x, double y){
+		data.add(new Object[]{x, y});
 		return this;
 	}
 
