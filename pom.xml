@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sebworks</groupId>
 	<artifactId>flotcharts</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.3.1</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,7 +14,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/bekce/flotcharts.git</connection>
-        <tag>HEAD</tag>
+        <tag>flotcharts-0.3.1</tag>
     </scm>
 
 	<dependencies>
