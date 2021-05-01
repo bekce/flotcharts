@@ -24,4 +24,23 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 	</dependencies>
+
+    <repositories>
+        <repository>
+            <id>sebMavenRepoRead</id>
+            <url>https://mymavenrepo.com/repo/2zkl4ErDEJwjVlzxCEDH/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>sebMavenRepoWrite</id>
+            <url>https://mymavenrepo.com/repo/CGFBWHvNOFlQJpwg1J3S/</url>
+        </repository>
+        <snapshotRepository>
+            <id>sebMavenRepoWrite</id>
+            <url>https://mymavenrepo.com/repo/CGFBWHvNOFlQJpwg1J3S/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
