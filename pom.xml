@@ -24,4 +24,5 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 	</dependencies>
+
 </project>
